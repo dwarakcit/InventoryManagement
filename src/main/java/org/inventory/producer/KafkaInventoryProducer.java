@@ -18,7 +18,7 @@ public class KafkaInventoryProducer {
         // Create Kafka Producer
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
 
-        // Get input from the user
+        // Get input from the user at terminal
         Scanner scanner = new Scanner(System.in);
 
         // Define the topic and message
