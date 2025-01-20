@@ -7,9 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class InventoryService {
-
     @Autowired
-    private InventoryRepository inventoryRepository;
+    InventoryRepository inventoryRepository;
 
     public void processInventoryMessage(String key, String value) {
         // Here we're assuming "value" is in JSON format and converting it to InventoryData
@@ -21,8 +20,8 @@ public class InventoryService {
         inventoryData.setMessageKey(key);
         inventoryData.setMessageValue(value);
 
-        // Save the data with the repository
-        inventoryRepository.save(inventoryData);
+        // Save the data with the repository - Traditional JPA for DB
+        inventoryRepository.insert(inventoryData);
         System.out.println("Message successfully saved to the database.");
     }
 }
