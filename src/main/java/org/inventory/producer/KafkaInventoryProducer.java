@@ -26,23 +26,31 @@ public class KafkaInventoryProducer {
         //String key = "item1";            // Optional key for the message
         //String value = "This is a test message for Kafka from Dwarak"; // Message value
 
-        System.out.println("Enter the item ID:");
-        String key = scanner.nextLine(); // Input for message key
-
-        System.out.println("Enter the item Name:");
-        String value = scanner.nextLine(); // Input for message value
-
         try {
-            // Send the message
-            ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, value);
-            producer.send(record, (RecordMetadata metadata, Exception exception) -> {
-                if (exception == null) {
-                    System.out.printf("Message sent successfully! Topic: %s, Partition: %d, Offset: %d%n",
-                            metadata.topic(), metadata.partition(), metadata.offset());
-                } else {
-                    System.err.printf("Message sending failed: %s%n", exception.getMessage());
+            while (true) {
+                System.out.println("Enter the item ID:");
+                String key = scanner.nextLine(); // Input for message key
+
+                System.out.println("Enter the item Name:");
+                String value = scanner.nextLine(); // Input for message value
+
+                // Send the message
+                ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, value);
+                producer.send(record, (RecordMetadata metadata, Exception exception) -> {
+                    if (exception == null) {
+                        System.out.printf("Message sent successfully! Topic: %s, Partition: %d, Offset: %d%n",
+                                metadata.topic(), metadata.partition(), metadata.offset());
+                    } else {
+                        System.err.printf("Message sending failed: %s%n", exception.getMessage());
+                    }
+                });
+
+                System.out.println("Press Y for Exit:");
+                String choice = scanner.nextLine();
+                if (choice.equalsIgnoreCase("Y")) {
+                    break;
                 }
-            });
+            }
         } finally {
             // Close the producer to release resources
             producer.close();
