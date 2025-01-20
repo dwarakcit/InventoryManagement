@@ -3,13 +3,18 @@ package org.inventory.consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.inventory.service.InventoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
 
 public class KafkaInventoryConsumer {
-    public static void main(String[] args) {
+    @Autowired
+    private InventoryService inventoryService;
+
+    public void startConsumer() {
         // Set consumer properties
         Properties properties = new Properties();
         properties.put("bootstrap.servers", "localhost:9092"); // Kafka broker address
@@ -37,6 +42,8 @@ public class KafkaInventoryConsumer {
                 for (ConsumerRecord<String, String> record : records) {
                     System.out.printf("Received message:\nKey: %s\nValue: %s\nPartition: %d\nOffset: %d\n\n",
                             record.key(), record.value(), record.partition(), record.offset());
+                    // Call InventoryService for further processing
+                    inventoryService.processInventoryMessage(record.key(), record.value());
                 }
             }
         } catch (Exception e) {
