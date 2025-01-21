@@ -20,8 +20,7 @@ public class InventoryService {
         inventoryData.setMessageKey(key);
         inventoryData.setMessageValue(value);
 
-        // Save the data with the repository - Traditional JPA for DB
+        // Save the data with the repository - Mongo JPA for DB
         inventoryRepository.insert(inventoryData);
-        System.out.println("Message successfully saved to the database.");
-    }
+        System.out.println("Message successfully saved to the database.");}
 }
